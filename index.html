@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b3b">
+  <meta name="description" content="Protótipo de jogo educacional de retenção de clientes.">
+  <title>Retenção Game — Protótipo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <div class="identity"><span class="pixel-mark">R</span><div><strong>RETENÇÃO GAME</strong><small>Treinamento em formato de aventura</small></div></div>
+      <div class="hud"><span id="phase-label">FASE 1 · INSATISFAÇÃO</span><span>XP <b id="xp">0</b></span><span>♥ <b id="lives">3</b></span></div>
+    </header>
+    <section class="stage-wrap" aria-label="Área do jogo">
+      <canvas id="game" width="960" height="540" aria-label="Jogo de plataforma. Use as setas ou A e D para andar, espaço para pular e E para interagir."></canvas>
+      <div class="mobile-controls"><button data-key="left" aria-label="Mover para esquerda">◀</button><button data-key="right" aria-label="Mover para direita">▶</button><button data-key="jump" aria-label="Pular">▲</button><button data-key="interact" aria-label="Interagir">E</button></div>
+      <div class="hint" id="hint">Explore o local e encontre alguém para ajudar.</div>
+    </section>
+    <footer><span>← → mover</span><span>ESPAÇO pular</span><span>E interagir</span><span>ESC fechar</span><button id="restart">Reiniciar protótipo</button></footer>
+  </main>
+  <section class="dialog-backdrop hidden" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    <div class="dialog-card">
+      <div class="dialog-top"><span id="dialog-tag">ATENDIMENTO</span><button id="close-dialog" aria-label="Fechar">×</button></div>
+      <h2 id="dialog-title">Vamos conversar</h2>
+      <p id="dialog-text"></p>
+      <div id="dialog-actions" class="dialog-actions"></div>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+    </div>
+  </section>
+  <script type="module" src="src/game.js"></script>
+</body>
+</html>
