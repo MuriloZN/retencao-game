@@ -22,7 +22,7 @@ function createMeter(){
 }
 function updateMeter(){
  const fill=document.querySelector("#meter-fill"),value=document.querySelector("#meter-value");
- if(fill)fill.style.width=retention+"%";
+ if(fill){fill.style.width=retention+"%";fill.style.background=retention>=65?"#4caa78":retention<=35?"#d45b62":"#e1ae45";}
  if(value)value.textContent=retention+"%";
 }
 function getStage(enc,index){
