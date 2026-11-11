@@ -1,0 +1,5 @@
+services:
+  - type: web
+    name: retencao-game
+    runtime: static
+    staticPublishPath: .
