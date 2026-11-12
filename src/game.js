@@ -3,17 +3,32 @@ import { phases } from "./data.js";
 const canvas=document.querySelector("#game"),ctx=canvas.getContext("2d");
 const xpEl=document.querySelector("#xp"),phaseEl=document.querySelector("#phase-label"),hint=document.querySelector("#hint");
 const dialog=document.querySelector("#dialog"),title=document.querySelector("#dialog-title"),body=document.querySelector("#dialog-text"),actions=document.querySelector("#dialog-actions"),feedback=document.querySelector("#feedback");
-const W=canvas.width,H=canvas.height,worldWidth=2600,groundY=438;
+const W=canvas.width,H=canvas.height,worldWidth=3500,groundY=438;
 let xp=0,phaseIndex=0,customerIndex=0,dialogOpen=false,camera=0,helpUsed=false,completed=new Set(),activeEncounter=null,stageIndex=0,retention=50,earnedThisTalk=0;
 const keys={left:false,right:false};
-let player={x:90,y:groundY-54,vx:0,vy:0,w:34,h:54,onGround:true};
-const platforms=Array.from({length:7},(_,i)=>({x:390+i*330,y:365-(i%2)*40,w:120,h:16}));
-const coins=Array.from({length:22},(_,i)=>({x:260+i*105,y:390-(i%3)*35,taken:false}));
+let player={x:90,y:groundY-54,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};
+const terrain=[
+ {x:0,w:500,y:438},{x:780,w:470,y:390},{x:1510,w:470,y:340},
+ {x:2250,w:530,y:410},{x:3020,w:480,y:350}
+];
+const platforms=[
+ {x:520,y:395,w:155,h:16},{x:680,y:350,w:130,h:16},
+ {x:1270,y:350,w:130,h:16},{x:1405,y:300,w:125,h:16},
+ {x:2000,y:300,w:125,h:16},{x:2130,y:350,w:120,h:16},
+ {x:2790,y:350,w:120,h:16},{x:2915,y:300,w:120,h:16}
+];
+const coins=[
+ {x:340,y:390},{x:570,y:350},{x:735,y:305},{x:930,y:345},
+ {x:1330,y:305},{x:1465,y:255},{x:1690,y:295},{x:2055,y:255},
+ {x:2190,y:305},{x:2450,y:365},{x:2835,y:305},{x:2970,y:255},
+ {x:3220,y:315},{x:3380,y:315}
+].map(c=>({...c,taken:false}));
 let npcs=[];
+const supervisors=[{x:155,name:"Supervisora 1",flip:false},{x:245,name:"Supervisora 2",flip:true}];
 const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 function currentPhase(){return phases[phaseIndex]}
 function currentEncounter(){const p=currentPhase();return customerIndex<p.customers.length?p.customers[customerIndex]:p.boss}
-function rebuildNpcs(){npcs=[];let x=570;currentPhase().customers.forEach((c,i)=>npcs.push({x:x+i*480,name:c.name,type:"customer",index:i}));npcs.push({x:2100,name:"CHEFE",type:"boss",index:3})}
+function rebuildNpcs(){const spots=[930,1690,2450];npcs=currentPhase().customers.map((c,i)=>({x:spots[i],name:c.name,type:"customer",index:i}));npcs.push({x:3380,name:"CHEFE",type:"boss",index:3})}
 function addXP(n){xp+=n;xpEl.textContent=xp}
 function createMeter(){
  let meter=document.querySelector("#retention-meter");
@@ -101,7 +116,7 @@ function completeEncounter(){
   else openDialog({name:"Parabéns!",issue:"Você concluiu as três etapas do protótipo.",question:"Obrigado por jogar!",options:[{text:"Finalizar",xp:0,good:true,feedback:"Protótipo concluído."}]},"FIM DE DEMONSTRAÇÃO");
  }
 }
-function openSupervisor(){openDialog({name:currentPhase().supervisor,issue:currentPhase().intro,question:"Está pronto para ajudar os clientes?",options:[{text:"Vamos começar!",xp:10,good:true,feedback:"Missão iniciada. Explore a área!"}]},"BRIEFING DA FASE")}
+function openSupervisor(){openDialog({name:"Briefing da fase",issue:currentPhase().intro+" Duas supervisoras estão no ponto de partida para orientar você.",question:"Está pronto para atravessar o percurso e ajudar os clientes?",options:[{text:"Vamos começar! Vou explorar o caminho e conversar com cada cliente.",xp:10,good:true,feedback:"Missão iniciada. O trajeto exige saltos e pulo duplo; observe as plataformas à frente."}]},"BRIEFING DA FASE")}
 function interact(){
  if(dialogOpen)return;
  const npc=npcs.find(n=>Math.abs((n.x+17)-(player.x+player.w/2))<85);
@@ -109,20 +124,22 @@ function interact(){
  else hint.textContent="Chegue mais perto de um personagem para conversar.";
 }
 function drawBackground(){
- const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#51b9ff");g.addColorStop(1,"#d4f4ff");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- for(let i=0;i<8;i++){let x=((i*190-camera*.25)%(W+180)+W+180)%(W+180)-70;ctx.fillStyle="#f4fbff";ctx.fillRect(x,75+(i%3)*35,75,18);ctx.fillRect(x+18,60+(i%3)*35,40,20)}
- ctx.fillStyle="#e7edf4";ctx.fillRect(340-camera*.55,170,1250,270);ctx.fillStyle="#24436b";ctx.fillRect(420-camera*.55,215,1180,170);
- for(let i=0;i<12;i++){ctx.fillStyle="#40a9ed";ctx.fillRect(450+i*92-camera*.55,230,65,135)}
- ctx.fillStyle="#533b37";ctx.fillRect(900-camera*.55,205,420,185);ctx.fillStyle="#fff";ctx.font="bold 34px Nunito";ctx.fillText("DESKTOP",1000-camera*.55,280);
- for(let i=0;i<15;i++){let x=(i*230-camera*.8)%(W+200);ctx.fillStyle="#765137";ctx.fillRect(x,350,15,100);ctx.fillStyle=i%2?"#258b4b":"#329e55";ctx.beginPath();ctx.arc(x+8,340,38,0,Math.PI*2);ctx.fill()}
+ const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1688f4");g.addColorStop(1,"#b9e7ff");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ for(let i=0;i<9;i++){const x=((i*175-camera*.22)%(W+160)+W+160)%(W+160)-60;ctx.fillStyle="#f7fbff";ctx.fillRect(x,65+(i%3)*30,70,17);ctx.fillRect(x+18,48+(i%3)*30,38,22)}
+ // Background facade placeholder keeps the scene readable until the supplied facade image is added as a repository asset.
+ const fx=160-camera*.34;ctx.fillStyle="#e8edf4";ctx.fillRect(fx,155,900,245);ctx.fillStyle="#183d68";ctx.fillRect(fx+45,195,810,170);
+ for(let i=0;i<9;i++){ctx.fillStyle="#218be0";ctx.fillRect(fx+65+i*88,210,65,140)}
+ ctx.fillStyle="#553a35";ctx.fillRect(fx+300,185,285,190);ctx.fillStyle="#fff";ctx.font="bold 28px Nunito";ctx.fillText("DESKTOP",fx+360,270);
+ for(let i=0;i<13;i++){const x=(i*270-camera*.65)%(W+220);ctx.fillStyle="#785137";ctx.fillRect(x,350,13,95);ctx.fillStyle="#278b4c";ctx.beginPath();ctx.arc(x+7,340,34,0,Math.PI*2);ctx.fill()}
 }
 function draw(){
  drawBackground();ctx.save();ctx.translate(-camera,0);
- ctx.fillStyle="#344d43";ctx.fillRect(0,groundY,worldWidth,H-groundY);ctx.fillStyle="#7bd34c";ctx.fillRect(0,groundY-7,worldWidth,9);ctx.fillStyle="#b9c7d2";ctx.fillRect(0,groundY+5,worldWidth,13);
- platforms.forEach(p=>{ctx.fillStyle="#8c5b3b";ctx.fillRect(p.x,p.y,p.w,p.h);ctx.fillStyle="#7bd34c";ctx.fillRect(p.x,p.y-5,p.w,6)});
+ terrain.forEach(t=>{ctx.fillStyle="#60422f";ctx.fillRect(t.x,t.y,t.w,H-t.y);ctx.fillStyle="#438b38";ctx.fillRect(t.x,t.y-8,t.w,10);ctx.fillStyle="#83d64d";ctx.fillRect(t.x,t.y-8,t.w,4);ctx.fillStyle="#9b7651";for(let x=t.x+12;x<t.x+t.w-8;x+=42)ctx.fillRect(x,t.y+18,20,5)});
+ platforms.forEach(p=>{ctx.fillStyle="#815235";ctx.fillRect(p.x,p.y,p.w,p.h+24);ctx.fillStyle="#3d9b42";ctx.fillRect(p.x,p.y-7,p.w,9);ctx.fillStyle="#a5e65c";ctx.fillRect(p.x,p.y-7,p.w,3)});
  coins.forEach(c=>{if(c.taken)return;ctx.fillStyle="#ffca38";ctx.beginPath();ctx.arc(c.x,c.y,12,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#fff1a5";ctx.lineWidth=3;ctx.stroke();ctx.fillStyle="#86520c";ctx.font="bold 13px Nunito";ctx.fillText("XP",c.x-8,c.y+5)});
- npcs.forEach(n=>{ctx.fillStyle=n.type==="boss"?"#643a83":"#8b3f56";ctx.fillRect(n.x,390,34,48);ctx.fillStyle="#e9b18b";ctx.fillRect(n.x+7,365,21,24);ctx.fillStyle="#17213b";ctx.fillRect(n.x+6,435,9,17);ctx.fillRect(n.x+22,435,9,17);ctx.fillStyle="#17213b";ctx.font="bold 13px Nunito";ctx.fillText(n.name,n.x-12,355);ctx.fillStyle="#fff";ctx.fillText("E",n.x+11,380)});
- ctx.fillStyle="#6b3046";ctx.fillRect(player.x,player.y+17,player.w,player.h-17);ctx.fillStyle="#e9b18b";ctx.fillRect(player.x+7,player.y,22,23);ctx.fillStyle="#243451";ctx.fillRect(player.x+5,player.y+player.h-8,12,8);ctx.fillRect(player.x+22,player.y+player.h-8,12,8);ctx.fillStyle="#fff";ctx.fillRect(player.x+22,player.y+8,4,4);
+ supervisors.forEach((sp,i)=>{const x=sp.x;ctx.save();if(sp.flip){ctx.translate(x*2+34,0);ctx.scale(-1,1);ctx.translate(-x,0)}ctx.fillStyle="#63394c";ctx.fillRect(x+4,385,30,48);ctx.fillStyle="#e5ae8b";ctx.fillRect(x+8,360,23,27);ctx.fillStyle="#4b2d27";ctx.fillRect(x+6,356,26,10);ctx.fillStyle="#17213b";ctx.fillRect(x+8,430,9,15);ctx.fillRect(x+23,430,9,15);ctx.restore();ctx.fillStyle="#fff";ctx.font="bold 12px Nunito";ctx.fillText("SUPERVISÃO",x-14,348)});
+ npcs.forEach(n=>{const floor=terrain.find(t=>n.x>=t.x&&n.x<t.x+t.w);const y=floor?floor.y:438;ctx.fillStyle=n.type==="boss"?"#643a83":"#8b3f56";ctx.fillRect(n.x,y-52,36,35);ctx.fillStyle="#e9b18b";ctx.fillRect(n.x+7,y-78,22,27);ctx.fillStyle="#17213b";ctx.fillRect(n.x+6,y-18,10,18);ctx.fillRect(n.x+23,y-18,10,18);ctx.fillStyle="#17213b";ctx.font="bold 13px Nunito";ctx.fillText(n.name,n.x-12,y-84);ctx.fillStyle="#fff";ctx.fillText("E",n.x+12,y-57)});
+ ctx.fillStyle="#6b3046";ctx.fillRect(player.x,player.y+20,player.w,player.h-20);ctx.fillStyle="#e9b18b";ctx.fillRect(player.x+9,player.y,24,25);ctx.fillStyle="#4a2d27";ctx.fillRect(player.x+8,player.y,26,9);ctx.fillStyle="#243451";ctx.fillRect(player.x+5,player.y+player.h-8,14,8);ctx.fillRect(player.x+25,player.y+player.h-8,14,8);ctx.fillStyle="#fff";ctx.fillRect(player.x+26,player.y+9,4,4);
  ctx.restore();ctx.fillStyle="#17264d";ctx.fillRect(18,18,220,10);ctx.fillStyle="#ffc83d";ctx.fillRect(18,18,220*(player.x/worldWidth),10);
 }
 function overlaps(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
@@ -136,20 +153,21 @@ function movePlayer(){
  player.vy=Math.min(player.vy+.55,13);player.y+=player.vy;player.onGround=false;
  if(player.vy>=0){
   let landing=null;
-  for(const p of platforms){if(oldY+player.h<=p.y+2&&player.y+player.h>=p.y&&player.x+player.w>p.x+2&&player.x<p.x+p.w-2){if(!landing||p.y<landing.y)landing=p}}
-  if(landing){player.y=landing.y-player.h;player.vy=0;player.onGround=true}
-  if(player.y+player.h>=groundY){player.y=groundY-player.h;player.vy=0;player.onGround=true}
+  for(const p of [...platforms,...terrain]){if(oldY+player.h<=p.y+2&&player.y+player.h>=p.y&&player.x+player.w>p.x+2&&player.x<p.x+p.w-2){if(!landing||p.y<landing.y)landing=p}}
+  if(landing){player.y=landing.y-player.h;player.vy=0;player.onGround=true;player.jumpsRemaining=2}
  }else{
   for(const p of platforms){if(oldY>=p.y+p.h&&player.y<=p.y+p.h&&player.x+player.w>p.x+2&&player.x<p.x+p.w-2){player.y=p.y+p.h;player.vy=0}}
+  for(const t of terrain){if(oldY>=t.y&&player.y<=t.y&&player.x+player.w>t.x&&player.x<t.x+t.w){player.y=t.y;player.vy=0}}
  }
  coins.forEach(c=>{if(!c.taken&&Math.abs(c.x-player.x-17)<24&&Math.abs(c.y-player.y-25)<40){c.taken=true;addXP(5)}});
+ if(player.y>H+100){const safe=terrain.filter(t=>t.x<=player.x).at(-1)||terrain[0];player.x=safe.x+Math.min(60,safe.w/3);player.y=safe.y-player.h;player.vy=0;player.vx=0;player.jumpsRemaining=2;hint.textContent="Você caiu! Retorne ao trecho seguro e tente novamente."}
  camera=clamp(player.x-W*.35,0,worldWidth-W);
 }
 function loop(){if(!dialogOpen)movePlayer();draw();requestAnimationFrame(loop)}
-function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&player.onGround&&!dialogOpen){player.vy=-10;player.onGround=false}if(k==="interact"&&v)interact()}
+function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&!dialogOpen&&player.jumpsRemaining>0){player.vy=player.jumpsRemaining===2?-11:-9.5;player.jumpsRemaining--;player.onGround=false}if(k==="interact"&&v)interact()}
 window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",true);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",true);if((e.key===" "||e.key==="ArrowUp"||e.key.toLowerCase()==="w")&&!e.repeat)setKey("jump",true);if(e.key.toLowerCase()==="e"&&!e.repeat)setKey("interact",true);if(e.key==="Escape")closeDialog()});
 window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",false);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",false)});
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setKey(k,true)});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{if(k==="left"||k==="right")setKey(k,false)}))});
 document.querySelector("#close-dialog").onclick=closeDialog;
-document.querySelector("#restart").onclick=()=>{xp=0;phaseIndex=0;customerIndex=0;completed.clear();coins.forEach(c=>c.taken=false);player={x:90,y:groundY-54,vx:0,vy:0,w:34,h:54,onGround:true};camera=0;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";rebuildNpcs();closeDialog();openSupervisor()};
+document.querySelector("#restart").onclick=()=>{xp=0;phaseIndex=0;customerIndex=0;completed.clear();coins.forEach(c=>c.taken=false);player={x:90,y:groundY-64,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};camera=0;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";rebuildNpcs();closeDialog();openSupervisor()};
 rebuildNpcs();openSupervisor();loop();
