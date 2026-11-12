@@ -63,7 +63,8 @@ Os itens abaixo existem na implementação atual. Isso não significa que tenham
 - [x] Três fases: Insatisfação, Financeiro e Técnico.
 - [x] Três clientes regulares e um chefe definidos por fase em `src/data.js`.
 - [x] NPCs posicionados no cenário e interação por proximidade usando a tecla E.
-- [x] Movimento lateral, salto, gravidade, limites horizontais do mundo e câmera que acompanha o jogador.
+- [x] Movimento lateral, gravidade, limites horizontais do mundo e câmera que acompanha o jogador.
+- [x] Pulo duplo: o segundo salto pode ser acionado no ar; a capacidade é restaurada ao aterrissar.
 - [x] Plataformas com lógica de colisão vertical e lateral implementada.
 - [x] Colecionáveis de XP distribuídos pelo cenário.
 - [x] Atendimento dividido em três etapas de escolha: investigação, encaminhamento e finalização.
@@ -81,8 +82,9 @@ Os itens abaixo existem na implementação atual. Isso não significa que tenham
 - [ ] **Medidor semanticamente calibrado:** os deltas alteram o percentual e determinam o resultado, mas a escala é uma regra simplificada de protótipo; não há validação pedagógica ou de negócio dos pesos.
 - [ ] **Progressão por níveis e desbloqueio de 2 a 4 alternativas:** está descrita em `docs/GAME_DESIGN.md`, mas não foi encontrada no código atual.
 - [ ] **Sistema de vidas:** o HUD exibe três vidas, mas não foi identificada lógica de perda, recuperação ou consequência.
-- [ ] **Cenários e arte finais:** cenário, NPCs, protagonista, plataformas e colecionáveis são desenhados com formas geométricas no Canvas. A pasta `assets/` contém apenas instruções; não há sprites ou tilesets implementados.
-- [ ] **Mundo e parkour completos:** há plataformas e colecionáveis simples, mas portas, caminhos alternativos, segredos, interiores e segmentos detalhados da fachada ainda não estão implementados.
+- [ ] **Cenários e arte finais:** o relevo e as plataformas agora têm diferentes alturas e trechos de travessia obrigatória, mas os personagens ainda são placeholders geométricos. As imagens enviadas pelo usuário (fachada e personagens principais) foram recebidas nesta conversa, porém ainda não estão armazenadas no repositório; a integração final dos arquivos binários permanece pendente.
+- [ ] **Supervisoras em cena:** duas figuras de supervisão aparecem no ponto inicial como placeholders geométricos; os retratos/sprites fornecidos ainda precisam ser integrados.
+- [ ] **Mundo e parkour completos:** há cinco trechos de terreno em alturas diferentes e plataformas de ligação que exigem saltos e pulo duplo para avançar. A física precisa de teste manual; ainda faltam caminhos alternativos, segredos, interiores e acabamento visual do relevo.
 - [ ] **Persistência:** não foi encontrada gravação de progresso entre sessões.
 - [ ] **Acessibilidade e responsividade:** existem controles móveis e regras CSS básicas, mas não há validação abrangente de acessibilidade, dispositivos ou tamanhos de tela.
 - [ ] **Validação real de execução:** o usuário relatou que o protótipo estava funcionando parcialmente, mas não há resultado de testes automatizados ou evidência de teste manual completo no histórico consultado.
