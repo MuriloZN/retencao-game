@@ -15,7 +15,7 @@ Projeto independente do DeskGaming.
 - HTML5: estrutura da página e elementos de interface.
 - CSS3: layout, HUD, diálogos e adaptação básica para telas menores.
 - JavaScript moderno (ES modules): lógica do jogo, dados, física, câmera e interações.
-- Canvas 2D: renderização do cenário e dos personagens provisórios.
+- Canvas 2D: renderização do cenário, spritesheets dos protagonistas e elementos de HUD.
 - Google Fonts (Nunito) importada por CSS.
 - Render Static Site: configuração declarada em `render.yaml`.
 
@@ -60,7 +60,7 @@ O arquivo `docs/ROADMAP.md` foi mantido como ponte para o roadmap principal. `do
 Os itens abaixo existem na implementação atual. Isso não significa que tenham sido validados em todos os navegadores ou que estejam livres de bugs.
 
 - [x] Página de jogo com Canvas 2D e HUD de fase, XP e vidas.
-- [x] Lobby inicial com seleção entre os personagens masculino (`pman.png`) e feminino (`pfem.png`).
+- [x] Lobby inicial com seleção entre os personagens masculino e feminino, com prévias dos spritesheets transparentes.
 - [x] Início da partida somente após pressionar “Iniciar jogo”; botão de reinício retorna ao lobby.
 - [x] Fachada original (`assets/back.png`) carregada como fundo do Canvas.
 - [x] Três fases: Insatisfação, Financeiro e Técnico.
@@ -85,8 +85,10 @@ Os itens abaixo existem na implementação atual. Isso não significa que tenham
 - [ ] **Medidor semanticamente calibrado:** os deltas alteram o percentual e determinam o resultado, mas a escala é uma regra simplificada de protótipo; não há validação pedagógica ou de negócio dos pesos.
 - [ ] **Progressão por níveis e desbloqueio de 2 a 4 alternativas:** está descrita em `docs/GAME_DESIGN.md`, mas não foi encontrada no código atual.
 - [ ] **Sistema de vidas:** o HUD exibe três vidas, mas não foi identificada lógica de perda, recuperação ou consequência.
-- [ ] **Personagens em movimento:** os retratos `pman.png` e `pfem.png` aparecem no lobby, mas o avatar que se move no mapa ainda é geométrico. Os arquivos atuais têm fundos incorporados e precisam de recorte/folhas de animação transparentes antes de serem usados como sprites móveis.
+- [x] **Personagens jogáveis com sprites:** seleção no lobby altera o personagem controlável; spritesheets PNG transparentes com quatro quadros por personagem são desenhados no Canvas, com animação de movimento, pose de repouso, salto e orientação esquerda/direita. Os spritesheets foram reduzidos para uso leve no navegador.
+- [ ] **Animação refinada:** os quadros disponíveis são poses-base; ainda precisam de mais quadros para transições mais suaves e animação de queda separada.
 - [ ] **Cenário completo:** `back.png` já está carregado como plano de fundo; terreno, plataformas e elementos de primeiro plano ainda são desenhados pelo Canvas e precisam de acabamento visual.
+- [x] HUD sobreposto ao cenário com retrato do personagem escolhido, nível, barra de XP, moedas, vidas, pausa e objetivo da fase.
 - [ ] **Supervisoras em cena:** duas figuras de supervisão aparecem no ponto inicial como placeholders geométricos; os retratos/sprites fornecidos ainda precisam ser integrados.
 - [ ] **Mundo e parkour completos:** há cinco trechos de terreno em alturas diferentes e plataformas de ligação que exigem saltos e pulo duplo para avançar. A física precisa de teste manual; ainda faltam caminhos alternativos, segredos, interiores e acabamento visual do relevo.
 - [ ] **Persistência:** não foi encontrada gravação de progresso entre sessões.
