@@ -1,44 +1,44 @@
 # Retenção Game
 
-Jogo educacional de retenção de clientes em formato plataforma 2D, com estética pixel art inspirada no ambiente da Desktop.
+Jogo educacional de retenção de clientes em formato plataforma 2D, com estética pixel art inspirada no ambiente da Desktop. Projeto independente do DeskGaming.
 
-> **Status:** protótipo inicial jogável em navegador. Projeto independente do DeskGaming.
+> **Status atual:** protótipo de navegador. Consulte primeiro [PROJECT_STATUS.md](PROJECT_STATUS.md) para conhecer o estado verificado, limitações e próximos passos.
 
-## Objetivo
-Treinar investigação, escuta ativa, comunicação, diagnóstico e apresentação de soluções justas em três frentes: **Insatisfação**, **Financeiro** e **Técnico**. O jogo não recompensa retenção a qualquer custo: quando cancelar é a decisão adequada, respeitar o cliente também é um bom resultado.
+## Documentação de continuidade
+
+- [PROJECT_STATUS.md](PROJECT_STATUS.md) — primeiro documento a consultar ao retomar o projeto.
+- [CHANGELOG.md](CHANGELOG.md) — histórico cronológico de alterações relevantes.
+- [ROADMAP.md](ROADMAP.md) — prioridades e planejamento atual.
+- [docs/GAME_DESIGN.md](docs/GAME_DESIGN.md) — visão de jogo, pilares e regras de design.
 
 ## Executar
-Não há dependências ou etapa de build nesta versão. Abra `index.html` em um navegador moderno ou publique o repositório com GitHub Pages.
+
+Não há dependências ou etapa de build nesta versão. Abra `index.html` em um servidor estático local ou publique o repositório em um serviço de hospedagem estática.
 
 ## Controles
+
 - **A / D** ou **← / →**: movimentar
 - **Espaço** ou **↑**: pular
 - **E**: conversar/interagir
 - **Esc**: fechar diálogo
 
 ## Estrutura
+
 - `index.html`: ponto de entrada do protótipo
 - `styles.css`: interface e apresentação
 - `src/game.js`: loop, controles, câmera, colisões e diálogos
 - `src/data.js`: fases, clientes e situações de atendimento
-- `docs/GAME_DESIGN.md`: visão de jogo e regras
-- `docs/ROADMAP.md`: próximos passos
 - `assets/`: espaço reservado para sprites, cenários, áudio e UI
-
-## Ciclo de jogo
-1. Explore o cenário e colete fichas de XP.
-2. Encontre clientes e pressione **E** para iniciar o atendimento.
-3. Investigue a situação antes de escolher uma resposta.
-4. Peça ajuda à supervisão quando quiser. A ajuda é ilimitada, mas reduz o bônus de XP daquela interação.
-5. Receba feedback e avance até o chefe da fase.
+- `docs/GAME_DESIGN.md`: visão de jogo e regras
+- `docs/ROADMAP.md`: atalho para o roadmap principal na raiz
 
 ## Princípios de aprendizagem
+
 - Investigar antes de oferecer uma solução.
 - Evitar promessas que não possam ser cumpridas.
 - Personalizar a abordagem sem pressionar o cliente.
 - Considerar a solução justa, inclusive quando ela envolve o cancelamento.
 
-## Personalização
-O projeto foi iniciado como uma base colaborativa. Personagens, fachada, cenários, diálogos e identidade visual serão refinados em conjunto. Use referências visuais autorizadas pela empresa; não inclua dados reais de clientes ou informações internas/confidenciais.
+Use referências visuais autorizadas pela empresa; não inclua dados reais de clientes ou informações internas/confidenciais.
 
-Consulte [o documento de design](docs/GAME_DESIGN.md) e [o roadmap](docs/ROADMAP.md).
+**Regra de continuidade:** toda alteração relevante deve ser registrada em `CHANGELOG.md` e refletida em `PROJECT_STATUS.md`. Atualize `ROADMAP.md` quando prioridades ou planejamento mudarem.
