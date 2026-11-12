@@ -6,8 +6,11 @@ const dialog=document.querySelector("#dialog"),title=document.querySelector("#di
 const W=canvas.width,H=canvas.height,worldWidth=3500,groundY=438;
 let xp=0,phaseIndex=0,customerIndex=0,dialogOpen=false,camera=0,helpUsed=false,completed=new Set(),activeEncounter=null,stageIndex=0,retention=50,earnedThisTalk=0,gameStarted=false,selectedCharacter="pman";
 const facadeImage=new Image();facadeImage.src="./assets/back.png";
-const characterImages={pman:new Image(),pfem:new Image()};
-characterImages.pman.src="./assets/pman.png";characterImages.pfem.src="./assets/pfem.png";
+const characterSprites={pman:new Image(),pfem:new Image()};
+characterSprites.pman.src="./assets/player-male-sprite.png";
+characterSprites.pfem.src="./assets/player-female-sprite.png";
+let animationTick=0,gamePaused=false;
+const portraitCanvas=document.querySelector("#player-portrait"),portraitCtx=portraitCanvas?.getContext("2d");
 const keys={left:false,right:false};
 let player={x:90,y:groundY-54,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};
 const terrain=[
@@ -32,7 +35,15 @@ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 function currentPhase(){return phases[phaseIndex]}
 function currentEncounter(){const p=currentPhase();return customerIndex<p.customers.length?p.customers[customerIndex]:p.boss}
 function rebuildNpcs(){const spots=[930,1690,2450];npcs=currentPhase().customers.map((c,i)=>({x:spots[i],name:c.name,type:"customer",index:i}));npcs.push({x:3380,name:"CHEFE",type:"boss",index:3})}
-function addXP(n){xp+=n;xpEl.textContent=xp}
+function addXP(n){
+ xp+=n;xpEl.textContent=xp;
+ const level=Math.floor(xp/100)+1,progress=xp%100;
+ const levelText=document.querySelector("#hud-level"),xpText=document.querySelector("#hud-xp"),bar=document.querySelector("#hud-xp-fill");
+ if(levelText)levelText.textContent="Nível "+level+" · "+(level===1?"Aprendiz":level<4?"Atendente":"Especialista");
+ if(xpText)xpText.textContent=progress+" / 100";
+ if(bar)bar.style.width=progress+"%";
+ const coinCount=document.querySelector("#coin-count");if(coinCount)coinCount.textContent=xp;
+}
 function createMeter(){
  let meter=document.querySelector("#retention-meter");
  if(!meter){meter=document.createElement("div");meter.id="retention-meter";meter.className="retention-meter";meter.innerHTML='<div class="meter-heading"><strong>Intenção de permanecer</strong><b id="meter-value">50%</b></div><div class="meter-track"><span id="meter-fill"></span></div><div class="meter-labels"><span>Cancelar</span><span>Continuar</span></div>';body.after(meter)}
@@ -147,7 +158,7 @@ function draw(){
  coins.forEach(c=>{if(c.taken)return;ctx.fillStyle="#ffca38";ctx.beginPath();ctx.arc(c.x,c.y,12,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#fff1a5";ctx.lineWidth=3;ctx.stroke();ctx.fillStyle="#86520c";ctx.font="bold 13px Nunito";ctx.fillText("XP",c.x-8,c.y+5)});
  supervisors.forEach((sp,i)=>{const x=sp.x;ctx.save();if(sp.flip){ctx.translate(x*2+34,0);ctx.scale(-1,1);ctx.translate(-x,0)}ctx.fillStyle="#63394c";ctx.fillRect(x+4,385,30,48);ctx.fillStyle="#e5ae8b";ctx.fillRect(x+8,360,23,27);ctx.fillStyle="#4b2d27";ctx.fillRect(x+6,356,26,10);ctx.fillStyle="#17213b";ctx.fillRect(x+8,430,9,15);ctx.fillRect(x+23,430,9,15);ctx.restore();ctx.fillStyle="#fff";ctx.font="bold 12px Nunito";ctx.fillText("SUPERVISÃO",x-14,348)});
  npcs.forEach(n=>{const floor=terrain.find(t=>n.x>=t.x&&n.x<t.x+t.w);const y=floor?floor.y:438;ctx.fillStyle=n.type==="boss"?"#643a83":"#8b3f56";ctx.fillRect(n.x,y-52,36,35);ctx.fillStyle="#e9b18b";ctx.fillRect(n.x+7,y-78,22,27);ctx.fillStyle="#17213b";ctx.fillRect(n.x+6,y-18,10,18);ctx.fillRect(n.x+23,y-18,10,18);ctx.fillStyle="#17213b";ctx.font="bold 13px Nunito";ctx.fillText(n.name,n.x-12,y-84);ctx.fillStyle="#fff";ctx.fillText("E",n.x+12,y-57)});
- if(selectedCharacter==="pfem"){ctx.fillStyle="#4a2d27";ctx.fillRect(player.x+5,player.y-2,31,34);ctx.fillRect(player.x+2,player.y+10,7,35);ctx.fillRect(player.x+32,player.y+10,7,35);ctx.fillStyle="#e9b18b";ctx.fillRect(player.x+10,player.y+5,22,23);ctx.fillStyle="#6b3046";ctx.fillRect(player.x+5,player.y+27,32,29);ctx.fillStyle="#243451";ctx.fillRect(player.x+5,player.y+player.h-8,14,8);ctx.fillRect(player.x+25,player.y+player.h-8,14,8);ctx.fillStyle="#fff";ctx.fillRect(player.x+26,player.y+13,4,4)}else{ctx.fillStyle="#6b3046";ctx.fillRect(player.x+4,player.y+23,34,33);ctx.fillStyle="#e9b18b";ctx.fillRect(player.x+9,player.y,24,27);ctx.fillStyle="#4a2d27";ctx.fillRect(player.x+7,player.y,28,10);ctx.fillStyle="#243451";ctx.fillRect(player.x+5,player.y+player.h-8,14,8);ctx.fillRect(player.x+25,player.y+player.h-8,14,8);ctx.fillStyle="#fff";ctx.fillRect(player.x+26,player.y+10,4,4)}
+ drawPlayerSprite();
  ctx.restore();ctx.fillStyle="#17264d";ctx.fillRect(18,18,220,10);ctx.fillStyle="#ffc83d";ctx.fillRect(18,18,220*(player.x/worldWidth),10);
 }
 function overlaps(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
@@ -171,7 +182,7 @@ function movePlayer(){
  if(player.y>H+100){const safe=terrain.filter(t=>t.x<=player.x).at(-1)||terrain[0];player.x=safe.x+Math.min(60,safe.w/3);player.y=safe.y-player.h;player.vy=0;player.vx=0;player.jumpsRemaining=2;hint.textContent="Você caiu! Retorne ao trecho seguro e tente novamente."}
  camera=clamp(player.x-W*.35,0,worldWidth-W);
 }
-function loop(){if(gameStarted&&!dialogOpen)movePlayer();draw();requestAnimationFrame(loop)}
+function loop(){animationTick++;if(gameStarted&&!dialogOpen&&!gamePaused)movePlayer();draw();requestAnimationFrame(loop)}
 function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&!dialogOpen&&player.jumpsRemaining>0){player.vy=player.jumpsRemaining===2?-11:-9.5;player.jumpsRemaining--;player.onGround=false}if(k==="interact"&&v)interact()}
 window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",true);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",true);if((e.key===" "||e.key==="ArrowUp"||e.key.toLowerCase()==="w")&&!e.repeat)setKey("jump",true);if(e.key.toLowerCase()==="e"&&!e.repeat)setKey("interact",true);if(e.key==="Escape")closeDialog()});
 window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",false);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",false)});
@@ -179,9 +190,11 @@ document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addE
 document.querySelector("#close-dialog").onclick=closeDialog;
 function selectCharacter(id){
  selectedCharacter=id;
+ updatePortrait();
  document.querySelectorAll("[data-character]").forEach(card=>{const active=card.dataset.character===id;card.classList.toggle("selected",active);card.setAttribute("aria-pressed",String(active))});
  const name=document.querySelector("#selected-character-name");
  if(name)name.textContent=id==="pman"?"Personagem masculino":"Personagem feminino";
+ const preview=document.querySelector("#lobby-selected-sprite");if(preview)preview.src=id==="pman"?"./assets/player-male-sprite.png":"./assets/player-female-sprite.png";
 }
 document.querySelectorAll("[data-character]").forEach(card=>card.addEventListener("click",()=>selectCharacter(card.dataset.character)));
 document.querySelector("#start-game").addEventListener("click",()=>{
@@ -197,4 +210,9 @@ document.querySelector("#restart").onclick=()=>{
  camera=0;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";
  rebuildNpcs();closeDialog();gameStarted=false;document.querySelector("#lobby").classList.remove("hidden");
 };
+document.querySelector("#pause-game")?.addEventListener("click",()=>{
+ gamePaused=!gamePaused;
+ document.querySelector("#pause-game").textContent=gamePaused?"▶":"Ⅱ";
+ hint.textContent=gamePaused?"Jogo pausado. Pressione continuar para voltar.":"Jogo retomado.";
+});
 selectCharacter("pman");rebuildNpcs();loop();
