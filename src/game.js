@@ -218,7 +218,7 @@ function selectCharacter(id){
  document.querySelectorAll("[data-character]").forEach(card=>{const active=card.dataset.character===id;card.classList.toggle("selected",active);card.setAttribute("aria-pressed",String(active))});
  const name=document.querySelector("#selected-character-name");
  if(name)name.textContent=id==="pman"?"Personagem masculino":"Personagem feminino";
- const preview=document.querySelector("#lobby-selected-sprite");if(preview)preview.src=id==="pman"?"./assets/player-male-sprite.png":"./assets/player-female-sprite.png";
+
 }
 document.querySelectorAll("[data-character]").forEach(card=>card.addEventListener("click",()=>selectCharacter(card.dataset.character)));
 document.querySelector("#start-game").addEventListener("click",()=>{
