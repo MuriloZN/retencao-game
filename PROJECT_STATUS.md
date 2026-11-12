@@ -132,6 +132,8 @@ Não foi possível confirmar nesta análise se o site publicado está atualizado
 
 ## 10. Instruções para futuras conversas com o assistente
 
+**Manutenção manual:** estes documentos são uma convenção de trabalho, não um mecanismo automatizado. Não foi encontrado workflow ou verificação que atualize os arquivos por conta própria; quem implementar uma alteração deve atualizar a documentação no mesmo conjunto de trabalho.
+
 1. Ler este `PROJECT_STATUS.md` primeiro; em seguida consultar `CHANGELOG.md`, `ROADMAP.md` e `docs/GAME_DESIGN.md) conforme necessário.
 2. Conferir o código atual antes de afirmar que uma funcionalidade existe ou está concluída.
 3. Distinguir claramente entre implementado, parcialmente implementado, planejado, relatado pelo usuário e testado.
