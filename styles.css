@@ -48,7 +48,7 @@
 .xp-panel{min-width:210px;padding:8px 14px;border:2px solid #667db2;border-radius:9px;background:rgba(20,39,82,.94);box-shadow:3px 4px 0 #101a39}
 .xp-panel strong,.xp-panel span{display:block;font-size:14px;line-height:1.4}
 .xp-panel strong{color:#ffcf4b;font-size:16px}
-.xp-panel span{color:#fff}
+.xp-panel span{color:#fff}.xp-panel small{display:block;color:#c5d5f5;font-size:10px;font-weight:800;letter-spacing:.4px;margin-top:2px}
 .xp-track{height:10px;margin-top:5px;border:1px solid #a18bd2;border-radius:9px;background:#29365f;overflow:hidden}
 .xp-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#a83ef0,#d36cff);transition:width .2s}
 .game-stats{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:12px;padding:7px 10px;border:2px solid #667db2;border-radius:11px;background:rgba(20,39,82,.95);box-shadow:3px 4px 0 #101a39;pointer-events:auto}
@@ -73,7 +73,7 @@ footer{padding-top:8px}
  .portrait-frame{width:49px;height:53px;border-width:2px}
  .portrait-frame canvas{width:43px;height:47px}
  .xp-panel{min-width:116px;padding:4px 6px}
- .xp-panel strong{font-size:10px}.xp-panel span{font-size:9px}.xp-track{height:7px;margin-top:3px}
+ .xp-panel strong{font-size:10px}.xp-panel span{font-size:9px}.xp-panel small{font-size:8px}.xp-track{height:7px;margin-top:3px}
  .game-stats{top:6px;right:6px;padding:4px 5px;gap:5px}
  .stat-pill{font-size:12px;gap:3px}.coin-icon{width:20px;height:20px;font-size:13px}.heart-icon{font-size:18px}
  .stat-divider{height:20px}.pause-button{width:26px;height:26px;font-size:14px}
