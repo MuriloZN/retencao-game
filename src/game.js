@@ -179,7 +179,7 @@ document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addE
 document.querySelector("#close-dialog").onclick=closeDialog;
 function selectCharacter(id){
  selectedCharacter=id;
- document.querySelectorAll("[data-character]").forEach(card=>card.classList.toggle("selected",card.dataset.character===id));
+ document.querySelectorAll("[data-character]").forEach(card=>{const active=card.dataset.character===id;card.classList.toggle("selected",active);card.setAttribute("aria-pressed",String(active))});
  const name=document.querySelector("#selected-character-name");
  if(name)name.textContent=id==="pman"?"Personagem masculino":"Personagem feminino";
 }
