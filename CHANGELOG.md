@@ -2,6 +2,14 @@
 
 Histórico resumido baseado nos commits observados na branch `main` e na documentação existente. Datas em UTC (data do commit); descrições de commit são resumidas e não substituem a inspeção do código.
 
+## 2026-11-12 — Parkour, pulo duplo e continuidade de diálogo
+- Adicionado pulo duplo com restauração ao aterrissar.
+- Substituído o chão contínuo por trechos de terreno em diferentes alturas e plataformas de ligação; o trajeto entre áreas agora exige saltos.
+- Redistribuídos os três clientes e o chefe ao longo do mapa.
+- Duas figuras provisórias de supervisão agora aparecem no início de cada fase.
+- As etapas de diálogo 2 e 3 passaram a retomar o contexto e o nome do cliente, preservando a estrutura de três etapas.
+- As imagens de fachada e personagens enviadas pelo usuário foram recebidas, mas ainda não foram adicionadas como arquivos binários ao repositório; a integração visual final permanece pendente.
+
 ## 2026-11-12 — Documentação de continuidade
 - Criados `PROJECT_STATUS.md`, `CHANGELOG.md` e `ROADMAP.md` na raiz.
 - Definido `PROJECT_STATUS.md` como primeiro documento a consultar em futuras conversas.
