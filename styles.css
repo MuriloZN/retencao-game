@@ -82,3 +82,22 @@ footer{padding-top:8px}
  .mobile-controls{left:6px;bottom:6px;gap:4px}.mobile-controls button{width:36px;height:36px;font-size:15px}
  .hint{bottom:48px;max-width:40%;font-size:9px;padding:5px 7px}
 }
+
+/* Diálogo em formato de balão no canto superior, como na referência */
+.dialog-backdrop{background:transparent;place-items:start;padding:112px 18px 18px;pointer-events:none}
+.dialog-card{pointer-events:auto;width:min(430px,calc(100vw - 36px));margin:0;background:rgba(255,248,237,.97);border:3px solid #27396b;border-radius:15px;padding:15px 18px;box-shadow:0 7px 0 #17264d,0 12px 28px #0005}
+.dialog-top{justify-content:flex-start;gap:12px}
+.dialog-top span{display:inline-block;padding:5px 14px;background:#6936bd;color:#fff;border:2px solid #37206f;border-radius:9px;font-size:13px}
+.dialog-top button{margin-left:auto}
+.dialog-card h2{margin:7px 0 3px;font-size:19px}
+.dialog-card p{font-size:14px;line-height:1.35;margin:8px 0}
+.dialog-actions{gap:7px;margin-top:10px}
+.dialog-actions button{padding:9px 11px;font-size:13px}
+.feedback{font-size:12px;min-height:18px}
+@media(max-width:650px){
+ .dialog-backdrop{padding:78px 8px 8px}
+ .dialog-card{width:min(380px,calc(100vw - 16px));padding:10px 12px}
+ .dialog-card h2{font-size:16px}
+ .dialog-card p{font-size:12px}
+ .dialog-actions button{font-size:11px;padding:8px}
+}
