@@ -16,18 +16,35 @@
     </header>
     <section class="stage-wrap" aria-label="Área do jogo">
       <canvas id="game" width="960" height="540" aria-label="Jogo de plataforma. Use as setas ou A e D para andar, espaço para pular e E para interagir."></canvas>
+      <div class="game-hud">
+        <div class="player-status">
+          <div class="portrait-frame"><canvas id="player-portrait" width="72" height="76" aria-label="Retrato do personagem selecionado"></canvas></div>
+          <div class="xp-panel">
+            <strong id="hud-level">Nível 1 · Aprendiz</strong>
+            <span>XP <b id="hud-xp">0 / 100</b></span>
+            <div class="xp-track"><span id="hud-xp-fill"></span></div>
+          </div>
+        </div>
+        <div class="game-stats">
+          <div class="stat-pill"><span class="coin-icon">✦</span><b id="coin-count">0</b></div>
+          <div class="stat-divider"></div>
+          <div class="stat-pill"><span class="heart-icon">♥</span><b id="lives">3</b></div>
+          <button class="pause-button" id="pause-game" type="button" aria-label="Pausar jogo">Ⅱ</button>
+        </div>
+        <div class="objective-card"><strong>🎯 Objetivo da fase</strong><span>Ajude os clientes, colete XP e chegue até o chefe da fase!</span></div>
+      </div>
       <section class="lobby" id="lobby" aria-labelledby="lobby-title">
         <div class="lobby-panel">
           <p class="lobby-eyebrow">DESKTOP · TREINAMENTO INTERATIVO</p>
           <h1 id="lobby-title">RETENÇÃO GAME</h1>
-          <p class="lobby-copy">Escolha seu personagem para começar a aventura.</p>
+          <p class="lobby-copy">Escolha seu personagem para começar a aventura.</p><img id="lobby-selected-sprite" class="lobby-selected-sprite" src="./assets/player-male-sprite.png" alt="Prévia do personagem selecionado">
           <div class="character-options" role="group" aria-label="Selecionar personagem">
             <button class="character-card selected" type="button" data-character="pman" aria-pressed="true">
-              <span class="character-art"><img src="./assets/pman.png" alt="Personagem masculino com uniforme vinho"></span>
+              <span class="character-art"><img src="./assets/player-male-sprite.png" alt="Animações do personagem masculino"></span>
               <strong>Personagem masculino</strong><small>Selecionar</small>
             </button>
             <button class="character-card" type="button" data-character="pfem" aria-pressed="false">
-              <span class="character-art"><img src="./assets/pfem.png" alt="Personagem feminino com uniforme vinho"></span>
+              <span class="character-art"><img src="./assets/player-female-sprite.png" alt="Animações do personagem feminino"></span>
               <strong>Personagem feminino</strong><small>Selecionar</small>
             </button>
           </div>
