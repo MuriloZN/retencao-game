@@ -88,6 +88,7 @@ Os itens abaixo existem na implementação atual. Isso não significa que tenham
 - [x] **Personagens jogáveis com sprites:** seleção no lobby altera o personagem controlável; spritesheets PNG transparentes com quatro quadros por personagem são desenhados no Canvas, com animação de movimento, pose de repouso, salto e orientação esquerda/direita. Os spritesheets foram reduzidos para uso leve no navegador.
 - [ ] **Animação refinada:** os quadros disponíveis são poses-base; ainda precisam de mais quadros para transições mais suaves e animação de queda separada.
 - [ ] **Cenário completo:** `back.png` já está carregado como plano de fundo; terreno, plataformas e elementos de primeiro plano ainda são desenhados pelo Canvas e precisam de acabamento visual.
+- [x] HUD sobreposto com retrato, nível, XP, fase, contador, vidas, botão de pausa e objetivo.
 - [x] HUD sobreposto ao cenário com retrato do personagem escolhido, nível, barra de XP, moedas, vidas, pausa e objetivo da fase.
 - [ ] **Supervisoras em cena:** duas figuras de supervisão aparecem no ponto inicial como placeholders geométricos; os retratos/sprites fornecidos ainda precisam ser integrados.
 - [ ] **Mundo e parkour completos:** há cinco trechos de terreno em alturas diferentes e plataformas de ligação que exigem saltos e pulo duplo para avançar. A física precisa de teste manual; ainda faltam caminhos alternativos, segredos, interiores e acabamento visual do relevo.
