@@ -6,7 +6,9 @@
 
 - [ ] Testar o pulo duplo e confirmar que ele é necessário nos trechos previstos.
 - [ ] Ajustar espaçamento, alturas e colisões do percurso com base em teste real.
-- [ ] Integrar os arquivos fornecidos (fachada e personagens) em `assets/` e conectá-los ao Canvas.
+- [x] Integrar a fachada `back.png` como fundo do Canvas e os spritesheets dos protagonistas ao renderizador.
+- [x] Ligar a escolha do lobby ao personagem controlável; adicionar HUD sobreposto inspirado na referência visual.
+- [ ] Validar visualmente a seleção, as animações e a escala dos personagens em navegador e celular.
 
 - [ ] Executar o jogo no navegador e registrar navegador, dispositivo e resultado.
 - [ ] Testar salto, aterrissagem em cada plataforma, colisões laterais, passagem sob plataformas e queda das bordas.
