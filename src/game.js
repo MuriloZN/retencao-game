@@ -157,10 +157,10 @@ function drawPlayerSprite(){
   ctx.fillStyle="#6b3046";ctx.fillRect(player.x+4,player.y+20,34,44);return;
  }
  const moving=Math.abs(player.vx)>.4;
- const frame=player.onGround?(moving?1+(Math.floor(animationTick/7)%3):0):3;
+ const frame=player.onGround?(moving?1+(Math.floor(animationTick/7)%2):0):3;
  const drawW=51.2,drawH=64,drawX=player.x-4.6,drawY=player.y;
  ctx.save();ctx.imageSmoothingEnabled=false;
- if(player.vx<-.2){ctx.translate(drawX*2+drawW,0);ctx.scale(-1,1);ctx.translate(-drawX,0)}
+ if(player.vx<-.2){ctx.translate(drawX*2+drawW,0);ctx.scale(-1,1)}
  ctx.drawImage(sprite,frame*32,0,32,40,drawX,drawY,drawW,drawH);
  ctx.restore();
 }
@@ -206,7 +206,7 @@ function movePlayer(){
  camera=clamp(player.x-W*.35,0,worldWidth-W);
 }
 function loop(){animationTick++;if(gameStarted&&!dialogOpen&&!gamePaused)movePlayer();draw();requestAnimationFrame(loop)}
-function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&!dialogOpen&&player.jumpsRemaining>0){player.vy=player.jumpsRemaining===2?-11:-9.5;player.jumpsRemaining--;player.onGround=false}if(k==="interact"&&v)interact()}
+function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&!dialogOpen&&!gamePaused&&player.jumpsRemaining>0){player.vy=player.jumpsRemaining===2?-11:-9.5;player.jumpsRemaining--;player.onGround=false}if(k==="interact"&&v&&!gamePaused)interact()}
 window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",true);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",true);if((e.key===" "||e.key==="ArrowUp"||e.key.toLowerCase()==="w")&&!e.repeat)setKey("jump",true);if(e.key.toLowerCase()==="e"&&!e.repeat)setKey("interact",true);if(e.key==="Escape")closeDialog()});
 window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",false);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",false)});
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setKey(k,true)});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{if(k==="left"||k==="right")setKey(k,false)}))});
