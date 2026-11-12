@@ -68,7 +68,10 @@ function getStage(enc,index){
 }
 function renderStage(){
  const enc=activeEncounter,stage=getStage(enc,stageIndex);
- body.textContent=stageIndex===0?enc.issue+" "+enc.question:stage.prompt;
+ const customerVoice=stageIndex===1
+  ? enc.name+" complementa: "+enc.issue+" O que você precisa considerar antes de encaminhar uma alternativa?"
+  : enc.name+" aguarda uma conclusão clara. Como você confirma o entendimento, combina os próximos passos e respeita a decisão?";
+ body.textContent=stageIndex===0?enc.issue+" "+enc.question:customerVoice+" "+stage.prompt;
  actions.innerHTML="";feedback.textContent="";
  const help=document.createElement("button");help.textContent="Pedir orientação à supervisão";help.className="help-button";
  help.onclick=()=>{if(helpUsed)return;helpUsed=true;feedback.textContent="Dica: "+(stageIndex===0?"use perguntas abertas e confirme o que entendeu antes de sugerir algo.":stageIndex===1?"avalie se a alternativa é realista, verificável e adequada ao contexto.":"resuma o combinado e respeite a autonomia do cliente.")+" A ajuda reduz o bônus de XP desta conversa.";help.disabled=true};
