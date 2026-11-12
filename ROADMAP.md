@@ -4,6 +4,10 @@
 
 ## Prioridade 0 — Validar a base atual
 
+- [ ] Testar o pulo duplo e confirmar que ele é necessário nos trechos previstos.
+- [ ] Ajustar espaçamento, alturas e colisões do percurso com base em teste real.
+- [ ] Integrar os arquivos fornecidos (fachada e personagens) em `assets/` e conectá-los ao Canvas.
+
 - [ ] Executar o jogo no navegador e registrar navegador, dispositivo e resultado.
 - [ ] Testar salto, aterrissagem em cada plataforma, colisões laterais, passagem sob plataformas e queda das bordas.
 - [ ] Verificar se o jogador consegue alcançar os NPCs e o chefe sem ficar preso.
@@ -43,7 +47,8 @@
 - [ ] Criar supervisores, clientes e chefes em pixel art.
 - [ ] Construir a fachada em segmentos reutilizáveis e revelar o cenário conforme a câmera avança.
 - [ ] Criar áreas de entrada, estacionamento, recepção e ambientes internos.
-- [ ] Adicionar plataformas, obstáculos, rotas alternativas e segredos com propósito de exploração.
+- [x] Adicionar relevo com plataformas em alturas variadas e travessias obrigatórias por salto.
+- [ ] Adicionar obstáculos, rotas alternativas e segredos com propósito de exploração.
 - [ ] Substituir gradualmente as formas geométricas provisórias por assets finais.
 
 **Dependência:** estabilizar dimensões de colisão, escala e câmera antes de produzir tilesets finais.
