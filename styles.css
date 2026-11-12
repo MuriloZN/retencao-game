@@ -36,3 +36,49 @@
 .start-game span{margin-left:10px}
 .lobby-controls{margin:13px 0 0;color:#b8c9ed;font-size:11px}
 @media(max-width:520px){.lobby{padding:7px}.lobby-panel{padding:12px}.character-options{gap:8px}.character-card{padding:6px}.character-art{height:145px}.lobby-controls{font-size:10px}}
+
+/* HUD integrado à cena, inspirado na referência visual enviada */
+.topbar{display:none}
+.game-shell{width:min(1500px,100%);padding:10px;background:#101b3b;border:3px solid #52699f}
+.stage-wrap{border:3px solid #253c70;border-radius:12px;box-shadow:0 8px 22px #0007}
+.game-hud{position:absolute;inset:0;z-index:2;pointer-events:none}
+.player-status{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:8px}
+.portrait-frame{width:76px;height:80px;display:grid;place-items:center;border:3px solid #ffd45b;border-radius:12px;background:linear-gradient(145deg,#5036a1,#1b2b57);box-shadow:3px 4px 0 #101a39}
+.portrait-frame canvas{width:68px;height:72px;image-rendering:pixelated}
+.xp-panel{min-width:210px;padding:8px 14px;border:2px solid #667db2;border-radius:9px;background:rgba(20,39,82,.94);box-shadow:3px 4px 0 #101a39}
+.xp-panel strong,.xp-panel span{display:block;font-size:14px;line-height:1.4}
+.xp-panel strong{color:#ffcf4b;font-size:16px}
+.xp-panel span{color:#fff}
+.xp-track{height:10px;margin-top:5px;border:1px solid #a18bd2;border-radius:9px;background:#29365f;overflow:hidden}
+.xp-track span{display:block;width:0;height:100%;background:linear-gradient(90deg,#a83ef0,#d36cff);transition:width .2s}
+.game-stats{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:12px;padding:7px 10px;border:2px solid #667db2;border-radius:11px;background:rgba(20,39,82,.95);box-shadow:3px 4px 0 #101a39;pointer-events:auto}
+.stat-pill{display:flex;align-items:center;gap:7px;font-size:17px}
+.coin-icon{display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:radial-gradient(#ffe98b,#e99b16);border:2px solid #fff1ad;color:#9a5b08;text-shadow:0 1px #fff;font-size:19px}
+.heart-icon{color:#ff536a;font-size:29px;text-shadow:1px 2px #8a1737}
+.stat-divider{height:30px;width:2px;background:#8e77c7}
+.pause-button{width:36px;height:36px;border:2px solid #a9c4ff;border-radius:8px;background:#293d70;color:white;font-size:20px;font-weight:900;cursor:pointer}
+.objective-card{position:absolute;right:12px;bottom:12px;width:min(230px,38%);padding:10px 12px;border:2px solid #9a79cf;border-radius:10px;background:rgba(23,30,72,.94);box-shadow:3px 4px 0 #101a39;display:grid;gap:4px}
+.objective-card strong{color:#d18aff;font-size:13px}
+.objective-card span{font-size:12px;line-height:1.3;color:white}
+.mobile-controls{display:flex;position:absolute;left:12px;bottom:12px;gap:8px;pointer-events:auto}
+.mobile-controls button{width:54px;height:54px;background:#172b57dd;color:white;border:2px solid #a5b9e8;border-radius:11px;font-size:23px;font-weight:900;box-shadow:2px 3px 0 #080f24}
+.hint{left:50%;transform:translateX(-50%);bottom:14px;max-width:34%;text-align:center;z-index:2}
+.lobby{z-index:4}
+.character-art img{width:100%;height:auto;max-height:100%;object-fit:contain;image-rendering:pixelated}
+.lobby-selected-sprite{display:block;width:min(340px,70%);height:58px;object-fit:contain;image-rendering:pixelated;margin:0 auto 8px;filter:drop-shadow(0 3px 2px #0008)}
+footer{padding-top:8px}
+@media(max-width:650px){
+ .game-shell{padding:4px;border-width:1px}
+ .player-status{top:6px;left:6px;gap:4px}
+ .portrait-frame{width:49px;height:53px;border-width:2px}
+ .portrait-frame canvas{width:43px;height:47px}
+ .xp-panel{min-width:116px;padding:4px 6px}
+ .xp-panel strong{font-size:10px}.xp-panel span{font-size:9px}.xp-track{height:7px;margin-top:3px}
+ .game-stats{top:6px;right:6px;padding:4px 5px;gap:5px}
+ .stat-pill{font-size:12px;gap:3px}.coin-icon{width:20px;height:20px;font-size:13px}.heart-icon{font-size:18px}
+ .stat-divider{height:20px}.pause-button{width:26px;height:26px;font-size:14px}
+ .objective-card{right:6px;bottom:6px;width:36%;padding:5px 6px;gap:2px}
+ .objective-card strong{font-size:9px}.objective-card span{font-size:8px}
+ .mobile-controls{left:6px;bottom:6px;gap:4px}.mobile-controls button{width:36px;height:36px;font-size:15px}
+ .hint{bottom:48px;max-width:40%;font-size:9px;padding:5px 7px}
+}
