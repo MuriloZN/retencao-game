@@ -174,7 +174,8 @@ function updatePortrait(){
  }
 }
 Object.values(characterSprites).forEach(img=>img.addEventListener("load",updatePortrait));
-\nfunction draw(){
+
+function draw(){
  drawBackground();ctx.save();ctx.translate(-camera,0);
  terrain.forEach(t=>{ctx.fillStyle="#60422f";ctx.fillRect(t.x,t.y,t.w,H-t.y);ctx.fillStyle="#438b38";ctx.fillRect(t.x,t.y-8,t.w,10);ctx.fillStyle="#83d64d";ctx.fillRect(t.x,t.y-8,t.w,4);ctx.fillStyle="#9b7651";for(let x=t.x+12;x<t.x+t.w-8;x+=42)ctx.fillRect(x,t.y+18,20,5)});
  platforms.forEach(p=>{ctx.fillStyle="#815235";ctx.fillRect(p.x,p.y,p.w,p.h+24);ctx.fillStyle="#3d9b42";ctx.fillRect(p.x,p.y-7,p.w,9);ctx.fillStyle="#a5e65c";ctx.fillRect(p.x,p.y-7,p.w,3)});
