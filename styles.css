@@ -12,3 +12,27 @@
 .dialog-actions .help-button{background:#66518c;border-color:#8b75b1}
 .final-meter{opacity:.9}
 @media(max-width:650px){.retention-meter{padding:9px 10px}.meter-heading{font-size:12px}.meter-heading b{font-size:16px}}
+
+/* Lobby de seleção de personagem */
+.stage-wrap{isolation:isolate}
+.lobby{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:18px;background:linear-gradient(115deg,rgba(7,18,47,.74),rgba(10,32,73,.42))}
+.lobby-panel{width:min(760px,100%);max-height:100%;overflow:auto;text-align:center;padding:clamp(16px,3vw,30px);border:3px solid #a8c7ff;border-radius:18px;background:linear-gradient(145deg,rgba(19,39,82,.97),rgba(31,51,96,.96));box-shadow:0 18px 48px #0009}
+.lobby-eyebrow{margin:0 0 5px;color:#ffcf4b;font-size:11px;font-weight:900;letter-spacing:2px}
+.lobby-panel h1{margin:0;color:#fff;font-size:clamp(24px,4vw,38px);letter-spacing:2px;text-shadow:3px 3px #25345e}
+.lobby-copy{margin:5px 0 18px;color:#dbe7ff}
+.character-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.character-card{min-width:0;padding:10px;border:3px solid #6178a9;border-radius:12px;background:#101d3d;color:white;font:inherit;cursor:pointer;transition:border-color .15s,transform .15s,background .15s}
+.character-card:hover{transform:translateY(-2px);border-color:#ffcf4b}
+.character-card.selected{border-color:#ffcf4b;background:#293d70;box-shadow:0 0 0 2px #ffcf4b55}
+.character-art{height:clamp(145px,25vw,220px);display:grid;place-items:center;overflow:hidden;border-radius:8px;background:linear-gradient(#80caff,#d7e8e8 70%,#65747d)}
+.character-art img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.character-card strong,.character-card small{display:block}
+.character-card strong{margin-top:9px;font-size:clamp(12px,2vw,15px)}
+.character-card small{margin-top:3px;color:#ffdc78;font-size:12px;font-weight:800}
+.selected-character{margin:12px 0;color:#d9e5ff;font-size:13px}
+.selected-character strong{color:#ffdc78}
+.start-game{width:min(360px,100%);padding:13px 20px;border:2px solid #ffe08a;border-radius:10px;background:linear-gradient(#ffd95b,#ed9f20);color:#202b4d;font:900 17px Nunito, sans-serif;letter-spacing:1px;cursor:pointer;box-shadow:0 4px #995b17}
+.start-game:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.start-game span{margin-left:10px}
+.lobby-controls{margin:13px 0 0;color:#b8c9ed;font-size:11px}
+@media(max-width:520px){.lobby{padding:7px}.lobby-panel{padding:12px}.character-options{gap:8px}.character-card{padding:6px}.character-art{height:145px}.lobby-controls{font-size:10px}}
