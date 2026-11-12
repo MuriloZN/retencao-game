@@ -129,7 +129,7 @@ function finishConversation(){
 function completeEncounter(){
  const key=phaseIndex+":"+customerIndex;if(completed.has(key))return;completed.add(key);customerIndex++;
  if(customerIndex>currentPhase().customers.length){
-  if(phaseIndex<phases.length-1){phaseIndex++;customerIndex=0;rebuildNpcs();phaseEl.textContent="FASE "+(phaseIndex+1)+" · "+currentPhase().name.toUpperCase();openSupervisor()}
+  if(phaseIndex<phases.length-1){phaseIndex++;customerIndex=0;rebuildNpcs();phaseEl.textContent="FASE "+(phaseIndex+1)+" · "+currentPhase().name.toUpperCase();const phaseHud=document.querySelector("#hud-phase");if(phaseHud)phaseHud.textContent=phaseEl.textContent;openSupervisor()}
   else openDialog({name:"Parabéns!",issue:"Você concluiu as três etapas do protótipo.",question:"Obrigado por jogar!",options:[{text:"Finalizar",xp:0,good:true,feedback:"Protótipo concluído."}]},"FIM DE DEMONSTRAÇÃO");
  }
 }
@@ -151,7 +151,30 @@ function drawBackground(){
   ctx.fillStyle="#e8edf4";ctx.fillRect(160-camera*.12,155,900,245);
  }
 }
-function draw(){
+function drawPlayerSprite(){
+ const sprite=characterSprites[selectedCharacter];
+ if(!sprite?.complete||!sprite.naturalWidth){
+  ctx.fillStyle="#6b3046";ctx.fillRect(player.x+4,player.y+20,34,44);return;
+ }
+ const moving=Math.abs(player.vx)>.4;
+ const frame=player.onGround?(moving?1+(Math.floor(animationTick/7)%3):0):3;
+ const drawW=51.2,drawH=64,drawX=player.x-4.6,drawY=player.y;
+ ctx.save();ctx.imageSmoothingEnabled=false;
+ if(player.vx<-.2){ctx.translate(drawX*2+drawW,0);ctx.scale(-1,1);ctx.translate(-drawX,0)}
+ ctx.drawImage(sprite,frame*32,0,32,40,drawX,drawY,drawW,drawH);
+ ctx.restore();
+}
+function updatePortrait(){
+ if(!portraitCtx)return;
+ const sprite=characterSprites[selectedCharacter];
+ portraitCtx.clearRect(0,0,portraitCanvas.width,portraitCanvas.height);
+ if(sprite?.complete&&sprite.naturalWidth){
+  portraitCtx.imageSmoothingEnabled=false;
+  portraitCtx.drawImage(sprite,0,0,32,40,8,2,56,70);
+ }
+}
+Object.values(characterSprites).forEach(img=>img.addEventListener("load",updatePortrait));
+\nfunction draw(){
  drawBackground();ctx.save();ctx.translate(-camera,0);
  terrain.forEach(t=>{ctx.fillStyle="#60422f";ctx.fillRect(t.x,t.y,t.w,H-t.y);ctx.fillStyle="#438b38";ctx.fillRect(t.x,t.y-8,t.w,10);ctx.fillStyle="#83d64d";ctx.fillRect(t.x,t.y-8,t.w,4);ctx.fillStyle="#9b7651";for(let x=t.x+12;x<t.x+t.w-8;x+=42)ctx.fillRect(x,t.y+18,20,5)});
  platforms.forEach(p=>{ctx.fillStyle="#815235";ctx.fillRect(p.x,p.y,p.w,p.h+24);ctx.fillStyle="#3d9b42";ctx.fillRect(p.x,p.y-7,p.w,9);ctx.fillStyle="#a5e65c";ctx.fillRect(p.x,p.y-7,p.w,3)});
@@ -199,7 +222,8 @@ function selectCharacter(id){
 document.querySelectorAll("[data-character]").forEach(card=>card.addEventListener("click",()=>selectCharacter(card.dataset.character)));
 document.querySelector("#start-game").addEventListener("click",()=>{
  if(gameStarted)return;
- gameStarted=true;
+ gameStarted=true;gamePaused=false;
+ document.querySelector("#pause-game").textContent="Ⅱ";
  document.querySelector("#lobby").classList.add("hidden");
  hint.textContent="Explore o local e encontre alguém para ajudar.";
  openSupervisor();
@@ -207,7 +231,7 @@ document.querySelector("#start-game").addEventListener("click",()=>{
 document.querySelector("#restart").onclick=()=>{
  xp=0;phaseIndex=0;customerIndex=0;completed.clear();coins.forEach(c=>c.taken=false);
  player={x:90,y:groundY-64,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};
- camera=0;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";
+ camera=0;gamePaused=false;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";const phaseHud=document.querySelector("#hud-phase");if(phaseHud)phaseHud.textContent=phaseEl.textContent;const levelText=document.querySelector("#hud-level"),xpText=document.querySelector("#hud-xp"),bar=document.querySelector("#hud-xp-fill"),coinCount=document.querySelector("#coin-count");if(levelText)levelText.textContent="Nível 1 · Aprendiz";if(xpText)xpText.textContent="0 / 100";if(bar)bar.style.width="0%";if(coinCount)coinCount.textContent="0";
  rebuildNpcs();closeDialog();gameStarted=false;document.querySelector("#lobby").classList.remove("hidden");
 };
 document.querySelector("#pause-game")?.addEventListener("click",()=>{
