@@ -4,7 +4,10 @@ const canvas=document.querySelector("#game"),ctx=canvas.getContext("2d");
 const xpEl=document.querySelector("#xp"),phaseEl=document.querySelector("#phase-label"),hint=document.querySelector("#hint");
 const dialog=document.querySelector("#dialog"),title=document.querySelector("#dialog-title"),body=document.querySelector("#dialog-text"),actions=document.querySelector("#dialog-actions"),feedback=document.querySelector("#feedback");
 const W=canvas.width,H=canvas.height,worldWidth=3500,groundY=438;
-let xp=0,phaseIndex=0,customerIndex=0,dialogOpen=false,camera=0,helpUsed=false,completed=new Set(),activeEncounter=null,stageIndex=0,retention=50,earnedThisTalk=0;
+let xp=0,phaseIndex=0,customerIndex=0,dialogOpen=false,camera=0,helpUsed=false,completed=new Set(),activeEncounter=null,stageIndex=0,retention=50,earnedThisTalk=0,gameStarted=false,selectedCharacter="pman";
+const facadeImage=new Image();facadeImage.src="./assets/back.png";
+const characterImages={pman:new Image(),pfem:new Image()};
+characterImages.pman.src="./assets/pman.png";characterImages.pfem.src="./assets/pfem.png";
 const keys={left:false,right:false};
 let player={x:90,y:groundY-54,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};
 const terrain=[
@@ -128,12 +131,14 @@ function interact(){
 }
 function drawBackground(){
  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#1688f4");g.addColorStop(1,"#b9e7ff");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- for(let i=0;i<9;i++){const x=((i*175-camera*.22)%(W+160)+W+160)%(W+160)-60;ctx.fillStyle="#f7fbff";ctx.fillRect(x,65+(i%3)*30,70,17);ctx.fillRect(x+18,48+(i%3)*30,38,22)}
- // Background facade placeholder keeps the scene readable until the supplied facade image is added as a repository asset.
- const fx=160-camera*.34;ctx.fillStyle="#e8edf4";ctx.fillRect(fx,155,900,245);ctx.fillStyle="#183d68";ctx.fillRect(fx+45,195,810,170);
- for(let i=0;i<9;i++){ctx.fillStyle="#218be0";ctx.fillRect(fx+65+i*88,210,65,140)}
- ctx.fillStyle="#553a35";ctx.fillRect(fx+300,185,285,190);ctx.fillStyle="#fff";ctx.font="bold 28px Nunito";ctx.fillText("DESKTOP",fx+360,270);
- for(let i=0;i<13;i++){const x=(i*270-camera*.65)%(W+220);ctx.fillStyle="#785137";ctx.fillRect(x,350,13,95);ctx.fillStyle="#278b4c";ctx.beginPath();ctx.arc(x+7,340,34,0,Math.PI*2);ctx.fill()}
+ if(facadeImage.complete&&facadeImage.naturalWidth){
+  const scale=Math.max(W/facadeImage.naturalWidth,H/facadeImage.naturalHeight);
+  const dw=facadeImage.naturalWidth*scale,dh=facadeImage.naturalHeight*scale;
+  const dx=(W-dw)/2-camera*.12;
+  ctx.drawImage(facadeImage,dx,(H-dh)/2,dw,dh);
+ }else{
+  ctx.fillStyle="#e8edf4";ctx.fillRect(160-camera*.12,155,900,245);
+ }
 }
 function draw(){
  drawBackground();ctx.save();ctx.translate(-camera,0);
@@ -166,11 +171,30 @@ function movePlayer(){
  if(player.y>H+100){const safe=terrain.filter(t=>t.x<=player.x).at(-1)||terrain[0];player.x=safe.x+Math.min(60,safe.w/3);player.y=safe.y-player.h;player.vy=0;player.vx=0;player.jumpsRemaining=2;hint.textContent="Você caiu! Retorne ao trecho seguro e tente novamente."}
  camera=clamp(player.x-W*.35,0,worldWidth-W);
 }
-function loop(){if(!dialogOpen)movePlayer();draw();requestAnimationFrame(loop)}
+function loop(){if(gameStarted&&!dialogOpen)movePlayer();draw();requestAnimationFrame(loop)}
 function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&!dialogOpen&&player.jumpsRemaining>0){player.vy=player.jumpsRemaining===2?-11:-9.5;player.jumpsRemaining--;player.onGround=false}if(k==="interact"&&v)interact()}
 window.addEventListener("keydown",e=>{if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",true);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",true);if((e.key===" "||e.key==="ArrowUp"||e.key.toLowerCase()==="w")&&!e.repeat)setKey("jump",true);if(e.key.toLowerCase()==="e"&&!e.repeat)setKey("interact",true);if(e.key==="Escape")closeDialog()});
 window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",false);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",false)});
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setKey(k,true)});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{if(k==="left"||k==="right")setKey(k,false)}))});
 document.querySelector("#close-dialog").onclick=closeDialog;
-document.querySelector("#restart").onclick=()=>{xp=0;phaseIndex=0;customerIndex=0;completed.clear();coins.forEach(c=>c.taken=false);player={x:90,y:groundY-64,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};camera=0;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";rebuildNpcs();closeDialog();openSupervisor()};
-rebuildNpcs();openSupervisor();loop();
+function selectCharacter(id){
+ selectedCharacter=id;
+ document.querySelectorAll("[data-character]").forEach(card=>card.classList.toggle("selected",card.dataset.character===id));
+ const name=document.querySelector("#selected-character-name");
+ if(name)name.textContent=id==="pman"?"Personagem masculino":"Personagem feminino";
+}
+document.querySelectorAll("[data-character]").forEach(card=>card.addEventListener("click",()=>selectCharacter(card.dataset.character)));
+document.querySelector("#start-game").addEventListener("click",()=>{
+ if(gameStarted)return;
+ gameStarted=true;
+ document.querySelector("#lobby").classList.add("hidden");
+ hint.textContent="Explore o local e encontre alguém para ajudar.";
+ openSupervisor();
+});
+document.querySelector("#restart").onclick=()=>{
+ xp=0;phaseIndex=0;customerIndex=0;completed.clear();coins.forEach(c=>c.taken=false);
+ player={x:90,y:groundY-64,vx:0,vy:0,w:42,h:64,onGround:true,jumpsRemaining:2};
+ camera=0;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";
+ rebuildNpcs();closeDialog();gameStarted=false;document.querySelector("#lobby").classList.remove("hidden");
+};
+selectCharacter("pman");rebuildNpcs();loop();
