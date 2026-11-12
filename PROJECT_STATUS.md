@@ -49,8 +49,8 @@ O arquivo `docs/ROADMAP.md` foi mantido como ponte para o roadmap principal. `do
 
 ### Responsabilidade dos arquivos de código
 
-- `index.html`: canvas 960×540, HUD, controles móveis, instruções e estrutura do diálogo.
-- `styles.css`: aparência da página, canvas, HUD, modal, medidor e responsividade básica.
+- `index.html`: canvas 960×540, HUD, lobby de seleção de personagem, controles móveis, instruções e estrutura do diálogo.
+- `styles.css`: aparência da página, canvas, lobby, cartões de seleção, HUD, modal, medidor e responsividade básica.
 - `src/game.js`: loop de animação, entrada, movimento, colisões, câmera, cenário desenhado, NPCs, atendimento, XP e progressão entre fases.
 - `src/data.js`: dados dos três grupos de clientes e respectivos desafios de chefe.
 - `render.yaml`: declaração de publicação estática no Render com diretório publicado na raiz.
@@ -60,6 +60,9 @@ O arquivo `docs/ROADMAP.md` foi mantido como ponte para o roadmap principal. `do
 Os itens abaixo existem na implementação atual. Isso não significa que tenham sido validados em todos os navegadores ou que estejam livres de bugs.
 
 - [x] Página de jogo com Canvas 2D e HUD de fase, XP e vidas.
+- [x] Lobby inicial com seleção entre os personagens masculino (`pman.png`) e feminino (`pfem.png`).
+- [x] Início da partida somente após pressionar “Iniciar jogo”; botão de reinício retorna ao lobby.
+- [x] Fachada original (`assets/back.png`) carregada como fundo do Canvas.
 - [x] Três fases: Insatisfação, Financeiro e Técnico.
 - [x] Três clientes regulares e um chefe definidos por fase em `src/data.js`.
 - [x] NPCs posicionados no cenário e interação por proximidade usando a tecla E.
@@ -82,12 +85,13 @@ Os itens abaixo existem na implementação atual. Isso não significa que tenham
 - [ ] **Medidor semanticamente calibrado:** os deltas alteram o percentual e determinam o resultado, mas a escala é uma regra simplificada de protótipo; não há validação pedagógica ou de negócio dos pesos.
 - [ ] **Progressão por níveis e desbloqueio de 2 a 4 alternativas:** está descrita em `docs/GAME_DESIGN.md`, mas não foi encontrada no código atual.
 - [ ] **Sistema de vidas:** o HUD exibe três vidas, mas não foi identificada lógica de perda, recuperação ou consequência.
-- [ ] **Cenários e arte finais:** o relevo e as plataformas agora têm diferentes alturas e trechos de travessia obrigatória, mas os personagens ainda são placeholders geométricos. As imagens enviadas pelo usuário (fachada e personagens principais) foram recebidas nesta conversa, porém ainda não estão armazenadas no repositório; a integração final dos arquivos binários permanece pendente.
+- [ ] **Personagens em movimento:** os retratos `pman.png` e `pfem.png` aparecem no lobby, mas o avatar que se move no mapa ainda é geométrico. Os arquivos atuais têm fundos incorporados e precisam de recorte/folhas de animação transparentes antes de serem usados como sprites móveis.
+- [ ] **Cenário completo:** `back.png` já está carregado como plano de fundo; terreno, plataformas e elementos de primeiro plano ainda são desenhados pelo Canvas e precisam de acabamento visual.
 - [ ] **Supervisoras em cena:** duas figuras de supervisão aparecem no ponto inicial como placeholders geométricos; os retratos/sprites fornecidos ainda precisam ser integrados.
 - [ ] **Mundo e parkour completos:** há cinco trechos de terreno em alturas diferentes e plataformas de ligação que exigem saltos e pulo duplo para avançar. A física precisa de teste manual; ainda faltam caminhos alternativos, segredos, interiores e acabamento visual do relevo.
 - [ ] **Persistência:** não foi encontrada gravação de progresso entre sessões.
 - [ ] **Acessibilidade e responsividade:** existem controles móveis e regras CSS básicas, mas não há validação abrangente de acessibilidade, dispositivos ou tamanhos de tela.
-- [ ] **Validação real de execução:** o usuário relatou que o protótipo estava funcionando parcialmente, mas não há resultado de testes automatizados ou evidência de teste manual completo no histórico consultado.
+- [ ] **Validação real de execução:** o lobby, a seleção e o carregamento da fachada foram implementados no código, mas ainda precisam de teste manual no navegador e em dispositivos móveis.
 
 ## 6. Bugs, riscos e pontos de atenção
 
