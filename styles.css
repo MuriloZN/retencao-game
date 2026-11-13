@@ -101,3 +101,47 @@ footer{padding-top:8px}
  .dialog-card p{font-size:12px}
  .dialog-actions button{font-size:11px;padding:8px}
 }
+
+/* Visual v2 — alinhado à referência (HUD, card das supervisoras, controles) */
+.stage-wrap{border-color:#1b2a55}
+.portrait-frame{border-color:#ffc83d;background:linear-gradient(145deg,#6a3fc0,#2a2f6b)}
+.xp-panel{background:rgba(18,28,66,.96);border-color:#3d4f8a;border-radius:12px;min-width:240px}
+.xp-panel strong{color:#fff;font-size:17px}
+.xp-panel span{font-size:17px;font-weight:800}.xp-panel em{font-style:normal;color:#ffc83d;font-weight:900}
+.xp-track{height:11px;border-color:#3d4f8a;background:#232d5b}.xp-track span{background:linear-gradient(90deg,#8d36e8,#b45cff)}
+.game-stats{background:rgba(18,28,66,.96);border-color:#3d4f8a;border-radius:14px}
+.coin-icon{background:radial-gradient(#ffe58a,#e9a114);border-color:#b86f0a;color:#7a4a06;font-weight:900;font-size:17px;text-shadow:none}
+.pause-button{background:#233a78;border-color:#8fb0ff;border-radius:10px}
+.objective-card{background:rgba(20,26,70,.96);border-color:#8d5cc8;width:min(260px,40%)}
+.objective-card strong{color:#c78bff;font-size:14px}.objective-card small{color:#9fb0e0;font-size:10px;font-weight:800}
+.mobile-controls{pointer-events:none}.mobile-controls button{pointer-events:auto;width:58px;height:58px;background:rgba(40,52,88,.78);border:2px solid #9aa9cc;border-radius:12px;box-shadow:none;font-size:26px;color:#dbe3f5}
+.mobile-controls{right:290px;left:12px;justify-content:flex-start}
+.mobile-controls [data-key=jump]{position:static;margin-left:auto}
+.mobile-controls [data-key=interact]{font-size:20px;font-weight:900;color:#ffc83d}
+/* card branco: duas supervisoras */
+.dialog-backdrop{padding:104px 18px 18px}
+.dialog-card{position:relative;display:grid;grid-template-columns:112px 1fr;gap:14px;width:min(560px,calc(100vw - 36px));padding:15px 28px 15px 18px;background:#fbf7ee;border:3px solid #2a3a73;border-radius:16px}
+.dialog-tab{position:absolute;top:-17px;left:128px;padding:5px 18px;background:#6a2fc4;color:#fff;border:2px solid #3b1f78;border-radius:12px;font:900 16px Nunito,sans-serif}
+.dialog-card #close-dialog{position:absolute;top:6px;right:8px;width:28px;height:28px;border:0;border-radius:8px;background:#e5ddf6;color:#34205f;font-size:20px;cursor:pointer}
+.dialog-supers{position:relative;align-self:stretch;margin:-15px 0 -15px -18px;overflow:hidden;border-radius:13px 0 0 13px;background:linear-gradient(#ead9c0,#d9c4a6);min-height:132px}
+.dialog-supers canvas{position:absolute;bottom:-6px;width:84px;height:84px;image-rendering:pixelated}
+.dialog-supers #sup-b{left:-14px}.dialog-supers #sup-a{left:32px}
+.dialog-main{min-width:0;padding-top:6px}
+.dialog-card h2{margin:0 0 4px;font-size:15px;color:#6a2fc4}
+.dialog-card p{font-size:15px;font-weight:700;color:#1d2650}
+.dialog-arrow{position:absolute;right:12px;bottom:8px;color:#2a3a73;font-size:14px}
+.dialog-actions button{background:#26397a;border-color:#4d66a8;border-radius:10px}
+@media(max-width:650px){.dialog-card{grid-template-columns:70px 1fr;gap:9px;padding:10px 20px 10px 12px}.dialog-supers{margin:-10px 0 -10px -12px;min-height:100px}.dialog-supers canvas{width:58px;height:58px}.dialog-supers #sup-b{left:-10px}.dialog-supers #sup-a{left:20px}.dialog-tab{left:84px;font-size:12px;padding:3px 12px;top:-13px}.mobile-controls{right:8px}.mobile-controls button{width:38px;height:38px;font-size:16px}.xp-panel{min-width:130px}}
+.dialog-backdrop{padding:146px 18px 18px 42px}
+.dialog-actions button,.dialog-card button{font-family:Nunito,system-ui,sans-serif}
+.dialog-supers canvas{width:112px;height:112px;bottom:-8px}
+.dialog-supers #sup-b{left:-24px}.dialog-supers #sup-a{left:28px}
+.dialog-card{grid-template-columns:104px 1fr}.dialog-tab{left:120px}
+@media(max-width:650px){.dialog-backdrop{padding:84px 6px 6px}}
+
+/* Lobby e storytelling */
+.lobby-panel h1{font-size:clamp(28px,5vw,54px);line-height:1.05;color:#ffc83d;letter-spacing:3px;text-shadow:0 4px #8c5d0b,0 8px #17264d}
+.dialog-backdrop.story{background:rgba(5,10,25,.74);place-items:center;padding:18px;pointer-events:auto}
+.dialog-backdrop.story .dialog-card{width:min(660px,100%)}
+.dialog-backdrop.story .dialog-card p{font-size:18px;line-height:1.45}
+.dialog-supers.speak-a #sup-b,.dialog-supers.speak-b #sup-a{filter:brightness(.5) saturate(.6)}
