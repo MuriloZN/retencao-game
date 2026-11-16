@@ -212,7 +212,7 @@ function movePlayer(){
 }
 function loop(){animationTick++;if(gameStarted&&!dialogOpen&&!gamePaused)movePlayer();draw();requestAnimationFrame(loop)}
 function setKey(k,v){if(k==="left"||k==="right")keys[k]=v;if(k==="jump"&&v&&!dialogOpen&&!gamePaused&&player.jumpsRemaining>0){player.vy=player.jumpsRemaining===2?-11:-9.5;player.jumpsRemaining--;player.onGround=false}if(k==="interact"&&v&&!gamePaused)interact()}
-window.addEventListener("keydown",e=>{if(storyNext&&[" ","Enter","e","E"].includes(e.key)){e.preventDefault();if(!e.repeat)storyNext();return}if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",true);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",true);if((e.key===" "||e.key==="ArrowUp"||e.key.toLowerCase()==="w")&&!e.repeat)setKey("jump",true);if(e.key.toLowerCase()==="e"&&!e.repeat)setKey("interact",true);if(e.key==="Escape")closeDialog()});
+window.addEventListener("keydown",e=>{if(gamePaused&&e.key!=="Escape")return;if(storyNext&&[" ","Enter","e","E"].includes(e.key)){e.preventDefault();if(!e.repeat)storyNext();return}if(["ArrowLeft","ArrowRight","ArrowUp"," "].includes(e.key))e.preventDefault();if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",true);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",true);if((e.key===" "||e.key==="ArrowUp"||e.key.toLowerCase()==="w")&&!e.repeat)setKey("jump",true);if(e.key.toLowerCase()==="e"&&!e.repeat)setKey("interact",true);if(e.key==="Escape"&&!e.repeat){e.preventDefault();setPause(!gamePaused)}});
 window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a")setKey("left",false);if(e.key==="ArrowRight"||e.key.toLowerCase()==="d")setKey("right",false)});
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setKey(k,true)});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{if(k==="left"||k==="right")setKey(k,false)}))});
 document.querySelector("#close-dialog").onclick=closeDialog;
@@ -239,11 +239,19 @@ document.querySelector("#restart").onclick=()=>{
  camera=0;gamePaused=false;xpEl.textContent="0";phaseEl.textContent="FASE 1 · INSATISFAÇÃO";const phaseHud=document.querySelector("#hud-phase");if(phaseHud)phaseHud.textContent=phaseEl.textContent;const levelText=document.querySelector("#hud-level"),xpText=document.querySelector("#hud-xp"),bar=document.querySelector("#hud-xp-fill"),coinCount=document.querySelector("#coin-count");if(levelText)levelText.textContent="Nível 1 • Aprendiz";if(xpText)xpText.textContent="0 / 100";if(bar)bar.style.width="0%";if(coinCount)coinCount.textContent="0";
  startPhase();closeDialog();gameStarted=false;document.querySelector("#lobby").classList.remove("hidden");
 };
-document.querySelector("#pause-game")?.addEventListener("click",()=>{
- gamePaused=!gamePaused;
- document.querySelector("#pause-game").textContent=gamePaused?"▶":"Ⅱ";
- hint.textContent=gamePaused?"Jogo pausado. Pressione continuar para voltar.":"Jogo retomado.";
-});
+const pauseMenu=document.querySelector("#pause-menu"),backBtn=document.querySelector("#back-to-lobby");
+function setPause(on){
+ if(!gameStarted)return;
+ gamePaused=on;pauseMenu.classList.toggle("hidden",!on);document.querySelector("#dialog").inert=on;keys.left=keys.right=false;
+ backBtn.textContent="Voltar ao lobby";backBtn.classList.remove("danger");
+ if(on)document.querySelector("#resume-game").focus();
+}
+document.querySelector("#pause-game").addEventListener("click",()=>setPause(!gamePaused));
+document.querySelector("#resume-game").onclick=()=>setPause(false);
+backBtn.onclick=()=>{
+ if(!backBtn.classList.contains("danger")){backBtn.textContent="Confirmar? O progresso será perdido";backBtn.classList.add("danger");return}
+ pauseMenu.classList.add("hidden");document.querySelector("#dialog").inert=false;document.querySelector("#restart").onclick();
+};
 function drawBust(id,o){const cv=document.querySelector(id),c=cv.getContext("2d"),r=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h)};r(3,2,10,o.long?14:6,o.hair);r(1,12,14,4,"#7a1f3a");r(6,11,4,2,o.skin);r(4,4,8,8,o.skin);r(3,2,10,3,o.hair);r(3,4,2,o.long?9:3,o.hair);r(11,4,2,o.long?9:3,o.hair);r(5,7,2,1,"#2a1a1a");r(9,7,2,1,"#2a1a1a");r(7,10,2,1,"#b5584a");r(7,13,2,2,"#ffc83d")}
 drawBust("#sup-a",{skin:"#e5ae8b",hair:"#5b3a29",long:true});drawBust("#sup-b",{skin:"#c98e66",hair:"#2b1d1a",long:false});
 selectCharacter("pman");startPhase();loop();
