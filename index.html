@@ -35,27 +35,20 @@
       <section class="lobby" id="lobby" aria-labelledby="lobby-title">
         <div class="lobby-panel">
           <p class="lobby-eyebrow">DESKTOP · TREINAMENTO INTERATIVO</p>
-          <h1 id="lobby-title">RETENÇÃO IMPOSSÍVEL</h1>
-          <p class="lobby-copy">Escolha seu personagem para começar a aventura.</p>
+          <h1 id="lobby-title"><span>RETENÇÃO</span><span class="gold">IMPOSSÍVEL</span></h1>
+          <p class="lobby-copy">Escute, investigue e retenha sem prometer o impossível.</p>
           <div class="character-options" role="group" aria-label="Selecionar personagem">
-            <button class="character-card selected" type="button" data-character="pman" aria-pressed="true">
-              <span class="character-art"><img src="./assets/pman.png" alt="Personagem masculino jogável"></span>
-              <strong>Personagem masculino</strong><small>Selecionar</small>
-            </button>
-            <button class="character-card" type="button" data-character="pfem" aria-pressed="false">
-              <span class="character-art"><img src="./assets/pfem.png" alt="Personagem feminino jogável"></span>
-              <strong>Personagem feminino</strong><small>Selecionar</small>
-            </button>
+            <button class="character-card selected" type="button" data-character="pman" aria-pressed="true"><span class="character-art"><img src="./assets/pman.png" alt="Personagem masculino jogável"></span><strong>Masculino</strong></button>
+            <button class="character-card" type="button" data-character="pfem" aria-pressed="false"><span class="character-art"><img src="./assets/pfem.png" alt="Personagem feminino jogável"></span><strong>Feminino</strong></button>
           </div>
-          <p class="selected-character">Selecionado: <strong id="selected-character-name">Personagem masculino</strong></p>
-          <button class="start-game" id="start-game" type="button">INICIAR JOGO <span aria-hidden="true">➜</span></button>
-          <p class="lobby-controls">A / D ou ← / → para mover · Espaço para pular duas vezes · E para interagir</p>
+          <button class="start-game" id="start-game" type="button">JOGAR</button>
+          <p class="lobby-controls">← → mover · Espaço pular · E interagir · Esc pausar</p>
         </div>
       </section>
       <div class="mobile-controls"><button data-key="left" aria-label="Mover para esquerda">◀</button><button data-key="right" aria-label="Mover para direita">▶</button><button data-key="jump" aria-label="Pular">▲</button><button data-key="interact" aria-label="Interagir">E</button></div>
       <div class="hint" id="hint">Explore o local e encontre alguém para ajudar.</div>
     </section>
-    <footer><span>← → mover</span><span>ESPAÇO pular</span><span>E interagir</span><span>ESC fechar</span><button id="restart">Reiniciar protótipo</button></footer>
+    <footer><span>← → mover</span><span>ESPAÇO pular</span><span>E interagir</span><span>ESC pausar</span><button id="restart">Reiniciar protótipo</button></footer>
   </main>
   <section class="dialog-backdrop hidden" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
     <div class="dialog-card">
@@ -69,6 +62,19 @@
         <p id="feedback" class="feedback" aria-live="polite"></p>
       </div>
       <span class="dialog-arrow" aria-hidden="true">▼</span>
+    </div>
+  </section>
+  <section class="pause-backdrop hidden" id="pause-menu" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+    <div class="pause-card">
+      <p class="pause-eyebrow">DESKTOP · RETENÇÃO IMPOSSÍVEL</p>
+      <h2 id="pause-title">PAUSA</h2>
+      <button class="menu-btn primary" id="resume-game" type="button">Retomar <kbd>Esc</kbd></button>
+      <button class="menu-btn" id="back-to-lobby" type="button">Voltar ao lobby</button>
+      <div class="pause-audio" aria-label="Áudio (em breve)">
+        <div class="pause-audio-head"><span>Áudio</span><em>EM BREVE</em></div>
+        <label>Música <input type="range" min="0" max="100" value="60" disabled></label>
+        <label>Efeitos <input type="range" min="0" max="100" value="80" disabled></label>
+      </div>
     </div>
   </section>
   <script type="module" src="src/game.js"></script>
