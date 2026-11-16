@@ -1,4 +1,8 @@
 Changelog
+2026-11-14 — Lobby v2 e menu de pausa
+Lobby redesenhado: título em destaque (Retenção / Impossível), frase de apoio, seleção de personagem compacta e botão "Jogar". HUD e controles ficam ocultos no lobby.
+Menu de pausa (Esc ou botão Ⅱ): Retomar, Voltar ao lobby (com confirmação, pois ainda não há save) e área de áudio desativada ("Em breve") para música e efeitos.
+Esc não fecha mais o atendimento no meio: agora pausa, e retomar volta exatamente ao ponto onde estava (corrige o bug do atendimento reiniciando).
 2026-11-13 — Retenção Impossível: lobby, storytelling e mapas
 Nome do jogo e lobby: "Retenção Impossível".
 Antes de cada fase: card de história com as duas supervisoras (contexto, dicas e padrões de qualidade). Avança com botão, Enter, E ou Espaço; Esc pula.
