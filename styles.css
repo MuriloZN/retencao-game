@@ -145,3 +145,36 @@ footer{padding-top:8px}
 .dialog-backdrop.story .dialog-card{width:min(660px,100%)}
 .dialog-backdrop.story .dialog-card p{font-size:18px;line-height:1.45}
 .dialog-supers.speak-a #sup-b,.dialog-supers.speak-b #sup-a{filter:brightness(.5) saturate(.6)}
+
+/* Lobby v2 e menu de pausa */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.stage-wrap:has(.lobby:not(.hidden)) :is(.game-hud,.mobile-controls,.hint){visibility:hidden}
+.lobby{background:radial-gradient(ellipse at 50% 38%,rgba(12,26,66,.45),rgba(4,9,26,.92) 82%);backdrop-filter:blur(3px)}
+.lobby-panel{width:min(640px,100%);max-height:none;overflow:visible;padding:0;border:0;background:none;box-shadow:none;display:grid;justify-items:center}
+.lobby-panel>*{animation:rise .6s both}.lobby-panel>:nth-child(2){animation-delay:.08s}.lobby-panel>:nth-child(3){animation-delay:.16s}.lobby-panel>:nth-child(4){animation-delay:.24s}.lobby-panel>:nth-child(5){animation-delay:.32s}.lobby-panel>:nth-child(6){animation-delay:.4s}
+.lobby-eyebrow{margin:0 0 12px;color:#9fb4e8;font-size:12px;letter-spacing:4px}
+.lobby-panel h1{display:grid;margin:0;font-size:clamp(34px,7.4vw,86px);line-height:.96;letter-spacing:3px;font-weight:900;color:#fff;text-shadow:none;filter:drop-shadow(0 4px 0 #1d2f66) drop-shadow(0 12px 16px rgba(0,0,0,.45))}
+.lobby-panel h1 .gold{background:linear-gradient(#fff2b0,#ffc83d 55%,#e08e10);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lobby-copy{margin:16px 0 24px;color:#c8d6f5;font-size:clamp(13px,1.6vw,17px);font-weight:700}
+.character-options{display:flex;gap:14px;justify-content:center;margin:0 0 26px}
+.character-card{width:104px;padding:8px 8px 10px;border:2px solid rgba(168,199,255,.35);border-radius:14px;background:rgba(16,29,61,.6)}
+.character-art{height:92px}.character-card strong{margin-top:6px;font-size:12px;color:#dbe7ff}
+.character-card.selected{border-color:#ffc83d;background:rgba(41,61,112,.85);box-shadow:0 0 0 3px rgba(255,200,61,.25),0 8px 20px rgba(0,0,0,.35)}
+.start-game{width:auto;min-width:230px;padding:15px 40px;border:0;border-radius:999px;background:linear-gradient(#ffd75e,#f0a417);color:#3a2300;font:900 21px Nunito,system-ui,sans-serif;letter-spacing:3px;box-shadow:0 5px 0 #a8650a,0 14px 26px rgba(0,0,0,.4);cursor:pointer;transition:transform .12s,box-shadow .12s}
+.start-game:hover{transform:translateY(-2px);box-shadow:0 7px 0 #a8650a,0 18px 30px rgba(0,0,0,.45)}.start-game:active{transform:translateY(3px);box-shadow:0 2px 0 #a8650a}
+.start-game:focus-visible,.menu-btn:focus-visible,.character-card:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.lobby-controls{margin:24px 0 0;color:#8fa3d1;font-size:12px;letter-spacing:.5px}
+.pause-backdrop{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:18px;background:rgba(4,9,26,.74);backdrop-filter:blur(4px)}
+.pause-backdrop.hidden{display:none}
+.pause-card{width:min(370px,100%);display:grid;gap:10px;padding:26px 24px 22px;text-align:center;border:2px solid #3d4f8a;border-radius:20px;background:linear-gradient(160deg,#16224f,#0d1534);box-shadow:0 20px 60px rgba(0,0,0,.55);animation:rise .25s both}
+.pause-eyebrow{margin:0;color:#8fa3d1;font-size:11px;letter-spacing:3px}.pause-card h2{margin:0 0 8px;color:#ffc83d;font-size:32px;letter-spacing:5px}
+.menu-btn{display:flex;justify-content:center;align-items:center;gap:10px;padding:13px 16px;border:2px solid #4d66a8;border-radius:12px;background:#1f3070;color:#fff;font:800 16px Nunito,system-ui,sans-serif;cursor:pointer;transition:filter .12s,transform .12s}
+.menu-btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.menu-btn.primary{border-color:#ffd75e;background:linear-gradient(#ffd75e,#f0a417);color:#3a2300}
+.menu-btn.danger{border-color:#ff8c8c;background:#6b1f2e}
+.menu-btn kbd{padding:2px 7px;border-radius:6px;background:rgba(0,0,0,.2);font:700 11px Nunito,system-ui,sans-serif}
+.pause-audio{display:grid;gap:8px;margin-top:8px;padding:12px 14px;border:1px dashed #3d4f8a;border-radius:12px;text-align:left;color:#b8c9ed;font-size:13px;font-weight:700;opacity:.7}
+.pause-audio-head{display:flex;justify-content:space-between}.pause-audio-head em{color:#ffc83d;font-size:10px;font-style:normal;letter-spacing:1.5px}
+.pause-audio label{display:flex;justify-content:space-between;align-items:center;gap:12px}.pause-audio input{width:60%}
+@media(prefers-reduced-motion:reduce){.lobby-panel>*,.pause-card{animation:none}}
+@media(max-width:520px){.character-card{width:88px}.character-art{height:76px}.start-game{min-width:190px;font-size:18px}.lobby-controls{font-size:10px}}
